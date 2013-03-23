@@ -1,0 +1,25 @@
+﻿@using ArinsSite.Helpers
+
+@model IEnumerable<ArinsSite.Models.Note> 
+@{
+    ViewBag.Title = "Index";
+}
+
+@section scripts{
+    @Scripts.Render("~/Scripts/jquery.signalR-1.0.0.js")
+    @Scripts.Render("~/signalr/hubs")
+    @Scripts.Render("//ajax.googleapis.com/ajax/libs/angularjs/1.0.3/angular.min.js")
+    @Scripts.Render("//code.angularjs.org/1.1.3/angular-resource.js")
+    @Scripts.Render("~/Scripts/notes.js")
+}
+
+<h2>Notes</h2>
+<section id="noteBoard" ng-app="Notes" ng-controller="NotesCtrl">
+    <div ng-repeat="note in notes" class="noteHolder" ng-controller="NotesItemCtrl"
+        style="position: absolute; top:{{note.LocationY - 30}}px; left:{{note.LocationX - 30}}px;">
+        <div class="delete" ng-click="deleteNoteClicked($event)">&#10006;</div>
+        <div class="note" ng-click="noteClicked($event)" ng-model="note.Text" contenteditable="true" data-id="{{note.Id}}">            
+        </div>
+    </div>
+</section>
+
