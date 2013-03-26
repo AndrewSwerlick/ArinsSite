@@ -16,10 +16,13 @@
 <h2>Notes</h2>
 <section id="noteBoard" ng-app="Notes" ng-controller="NotesCtrl">
     <div ng-repeat="note in notes" class="noteHolder" ng-controller="NotesItemCtrl"
-        style="position: absolute; top:{{note.LocationY - 30}}px; left:{{note.LocationX - 30}}px;">
+        ng-style="{position: 'absolute', top:note.LocationY - 30 +'px', left:note.LocationX - 30 + 'px'}"
+        random-rotate z-focus="click,focusout"
+         moveable="{dragElement: 'div.drag', moved: 'noteMoved'}">
         <div class="delete" ng-click="deleteNoteClicked($event)">&#10006;</div>
         <div class="note" ng-click="noteClicked($event)" ng-model="note.Text" contenteditable="true" data-id="{{note.Id}}">            
         </div>
+        <div class="drag"></div>
     </div>
 </section>
 

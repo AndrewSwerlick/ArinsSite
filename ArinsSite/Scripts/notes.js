@@ -17,6 +17,54 @@ Notes.directive('contenteditable', function() {
         }
     };
 });
+Notes.directive('randomRotate', function () {
+    return function (scope, element, attrs) {
+        var rotation = Math.floor((Math.random() * 10)) - 5;
+        element.css("-webkit-transform", "rotate(" + rotation + "deg)");
+    }
+});
+Notes.directive('moveable', function () {
+    return function (scope, element, attrs) {
+        var options = scope.$eval(attrs.moveable);
+        var dragElement = element.find(options.dragElement);
+        var xStart = 0;
+        var yStart = 0;
+        var startPos;
+        var move = function (e) {
+            currentPos = {};
+            currentPos.top = startPos.top + e.pageY - yStart;
+            currentPos.left = startPos.left + e.pageX - xStart;
+            element.css(currentPos);
+        }
+        dragElement.mousedown(function (e) {            
+            xStart = e.pageX;
+            yStart = e.pageY;
+            startPos = element.position();
+            element.mousemove(move);
+        });
+        dragElement.mouseup(function (e) {
+            element.unbind('mousemove', move);
+            currentPos = {};
+            currentPos.top = startPos.top + e.pageY - yStart;
+            currentPos.left = startPos.left + e.pageX - xStart;
+            scope[options.moved](currentPos);
+        });
+    }
+});
+Notes.directive('zFocus', function () {
+    return function (scope, element, attrs) {
+        var events = attrs.zFocus;
+        var focusEvent = events.split(',')[0];
+        var resetEvent = events.split(',')[1];
+        var currentz = element.css("z-index");
+        element.on(focusEvent, function () {
+            element.css("z-index", "99");
+        });
+        element.on(resetEvent, function () {
+            element.css("z-index", currentz);
+        });
+    }
+});
 var notesHub = $.connection.notes;
 
 function NotesCtrl($scope, $resource) {
@@ -35,6 +83,8 @@ function NotesCtrl($scope, $resource) {
             if (note.Id == updatedNote.Id)
                 $scope.$apply(function () {
                     note.Text = updatedNote.Text;
+                    note.LocationX = updatedNote.LocationX;
+                    note.LocationY = updatedNote.LocationY;
                 });
         }
     }
@@ -75,7 +125,11 @@ function NotesItemCtrl($scope) {
     $scope.deleteNoteClicked = function (event) {
         notesHub.server.deleteNote($scope.notes[$scope.$index]);
     };
-    $scope.noteClicked = function (event) {
-        $(event.srcElement.parentElement).css("z-index","99");
+
+    $scope.noteMoved = function (newPos) {
+        var note = $scope.notes[$scope.$index];
+        note.LocationY = newPos.top;
+        note.LocationX = newPos.left;
+        notesHub.server.updateNote(note);
     }
 }

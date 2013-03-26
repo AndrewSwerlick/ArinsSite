@@ -588,6 +588,7 @@ tr.pager td {
 
 div.note {
     margin: 25px;
+    margin-top:0px;
     width: 165px;
     min-height:125px;
     max-height:175px;
@@ -639,6 +640,22 @@ div.noteHolder div.delete {
     cursor:pointer;
     font-size:16px; 
     font-weight:bold;
+}
+
+div.noteHolder div.drag {
+    cursor: pointer;
+    background-image: -moz-linear-gradient(left bottom, rgba(255,255,136,1) 77%, rgba(255,255,214,1) 100%); /* FF3.6+ */
+    background-image: -webkit-linear-gradient(left bottom, rgba(255,255,108,1) 77%,rgba(255,255,136,1) 100%); /* Chrome10+,Safari5.1+ */
+    background-image: -o-linear-gradient(left bottom, rgba(255,255,136,1) 77%,rgba(255,255,214,1) 100%); /* Opera 11.10+ */
+    background-image: -ms-linear-gradient(left bottom, rgba(255,255,136,1) 77%,rgba(255,255,214,1) 100%); /* IE10+ */
+    background-image: linear-gradient(left bottom, rgba(255,255,136,1) 77%,rgba(255,255,214,1) 100%); /* W3C */
+    width: 165px;
+    margin-left: 28px;
+    margin-right:25px;
+    position: absolute;
+    top:0px;
+    left:0px;
+    height:20px;
 }
 
 section#noteBoard {

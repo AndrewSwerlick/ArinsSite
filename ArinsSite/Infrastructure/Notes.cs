@@ -30,6 +30,8 @@ namespace ArinsSite.Infrastructure
                 return;
             var existingNote = context.Notes.Find(note.Id);
             existingNote.Text = note.Text;
+            existingNote.LocationX = note.LocationX;
+            existingNote.LocationY = note.LocationY;
             context.SaveChanges();
             Clients.Others.noteUpdated(note);
         }
